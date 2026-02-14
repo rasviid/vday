@@ -6,6 +6,10 @@
 <title>Untuk Kamu 💌</title>
 
 <style>
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: 'Georgia', serif;
@@ -47,20 +51,25 @@ body::before {
   100% { transform: translateY(-110vh); opacity: 0; }
 }
 
-/* BOOK FIXED */
-.book {
-  display: flex;
+/* WRAPPER FIX */
+.book-wrapper {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  transition: transform 0.5s ease;
   position: relative;
-  z-index: 2;
+}
+
+/* BOOK */
+.book {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
 }
 
 .page {
   flex: 0 0 100%;
-  height: 100vh;
+  height: 100%;
   padding: 40px 25px;
   box-sizing: border-box;
   display: flex;
@@ -131,46 +140,48 @@ p {
 
 <body>
 
-<audio id="bgMusic" autoplay loop>
+<audio id="bgMusic" loop>
   <source src="lagu.mp3" type="audio/mp3">
 </audio>
 
 <button id="musicToggle">🔊</button>
 
-<div class="book" id="book">
+<div class="book-wrapper">
+  <div class="book" id="book">
 
-  <div class="page">
-    <h1>Untuk Kamu 💌</h1>
-    <p>Aku nggak pernah nyangka perasaan ini bisa tumbuh pelan-pelan kayak gini. Rasanya sederhana, tapi berarti banget.</p>
-  </div>
-
-  <div class="page">
-    <h1>Ada Yang Berbeda</h1>
-    <p>Sejak kenal kamu, hari-hari terasa lebih hangat. Hal kecil jadi spesial, dan senyum jadi lebih sering muncul.</p>
-  </div>
-
-  <div class="page">
-    <h1>Aku Suka Cara Kamu</h1>
-    <p>Caramu ketawa, caramu cerita, caramu jadi diri sendiri — semuanya bikin aku nyaman tanpa dibuat-buat.</p>
-  </div>
-
-  <div class="page">
-    <h1>Bukan Cuma Hari Ini</h1>
-    <p>Aku nggak cuma pengen hari ini terasa manis. Aku pengen banyak hari setelah ini juga tetap ada kamu.</p>
-  </div>
-
-  <div class="page">
-    <h1>Jadi...</h1>
-    <p>Kamu mau nggak jadi bagian dari cerita ini?</p>
-
-    <div class="choice-buttons" id="buttons">
-      <button id="mauBtn" onclick="handleClick(this)">Mau 💕</button>
-      <button id="nggakBtn" onclick="handleClick(this)">Nggak 😅</button>
+    <div class="page">
+      <h1>Untuk Kamu 💌</h1>
+      <p>Aku nggak pernah nyangka perasaan ini bisa tumbuh pelan-pelan kayak gini. Rasanya sederhana, tapi berarti banget.</p>
     </div>
 
-    <div id="finalArea"></div>
-  </div>
+    <div class="page">
+      <h1>Ada Yang Berbeda</h1>
+      <p>Sejak kenal kamu, hari-hari terasa lebih hangat. Hal kecil jadi spesial, dan senyum jadi lebih sering muncul.</p>
+    </div>
 
+    <div class="page">
+      <h1>Aku Suka Cara Kamu</h1>
+      <p>Caramu ketawa, caramu cerita, caramu jadi diri sendiri — semuanya bikin aku nyaman tanpa dibuat-buat.</p>
+    </div>
+
+    <div class="page">
+      <h1>Bukan Cuma Hari Ini</h1>
+      <p>Aku nggak cuma pengen hari ini terasa manis. Aku pengen banyak hari setelah ini juga tetap ada kamu.</p>
+    </div>
+
+    <div class="page">
+      <h1>Jadi...</h1>
+      <p>Kamu mau nggak jadi bagian dari cerita ini?</p>
+
+      <div class="choice-buttons" id="buttons">
+        <button id="mauBtn" onclick="handleClick(this)">Mau 💕</button>
+        <button id="nggakBtn" onclick="handleClick(this)">Nggak 😅</button>
+      </div>
+
+      <div id="finalArea"></div>
+    </div>
+
+  </div>
 </div>
 
 <button class="nav prev" onclick="prevPage()">‹</button>
@@ -179,6 +190,12 @@ p {
 <script>
 const music = document.getElementById("bgMusic");
 const toggleBtn = document.getElementById("musicToggle");
+
+/* START MUSIC DARI DETIK 3 */
+music.addEventListener("loadedmetadata", () => {
+  music.currentTime = 3;
+  music.play();
+});
 
 toggleBtn.onclick = () => {
   if (music.paused) {
@@ -223,7 +240,7 @@ function prevPage() {
   }
 }
 
-/* Swipe Mobile */
+/* Swipe */
 let startX = 0;
 document.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
@@ -252,7 +269,7 @@ function handleClick(button) {
 function startFinal() {
   document.getElementById("buttons").innerHTML = "";
 
-  let count = 8;
+  let count = 5;
 
   document.getElementById("finalArea").innerHTML = `
     <h2 style="color:#b85c6a;">Happy Valentine's Day 💖✨</h2>
