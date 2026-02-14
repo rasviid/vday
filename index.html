@@ -47,17 +47,19 @@ body::before {
   100% { transform: translateY(-110vh); opacity: 0; }
 }
 
+/* BOOK FIXED */
 .book {
   display: flex;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  overflow: hidden;
   transition: transform 0.5s ease;
   position: relative;
   z-index: 2;
 }
 
 .page {
-  min-width: 100vw;
+  flex: 0 0 100%;
   height: 100vh;
   padding: 40px 25px;
   box-sizing: border-box;
@@ -74,7 +76,7 @@ h1 {
 }
 
 p {
-  max-width: 95%;
+  max-width: 520px;
   line-height: 1.7;
   font-size: 16px;
   color: #5e3c44;
@@ -92,7 +94,7 @@ p {
 #mauBtn { background: #b85c6a; color: white; }
 #nggakBtn { background: #ddd; }
 
-/* NAV BUTTONS */
+/* NAV */
 .nav {
   position: fixed;
   bottom: 20px;
@@ -204,14 +206,16 @@ const book = document.getElementById("book");
 const totalPages = document.querySelectorAll(".page").length;
 
 function update() {
-  book.style.transform = `translateX(-${current * 100}vw)`;
+  book.style.transform = `translateX(-${current * 100}%)`;
 }
+
 function nextPage() {
   if (current < totalPages - 1) {
     current++;
     update();
   }
 }
+
 function prevPage() {
   if (current > 0) {
     current--;
@@ -219,7 +223,7 @@ function prevPage() {
   }
 }
 
-/* SWIPE MOBILE SUPPORT */
+/* Swipe Mobile */
 let startX = 0;
 document.addEventListener("touchstart", e => {
   startX = e.touches[0].clientX;
@@ -248,7 +252,7 @@ function handleClick(button) {
 function startFinal() {
   document.getElementById("buttons").innerHTML = "";
 
-  let count = 5;
+  let count = 8;
 
   document.getElementById("finalArea").innerHTML = `
     <h2 style="color:#b85c6a;">Happy Valentine's Day 💖✨</h2>
@@ -269,7 +273,6 @@ function startFinal() {
 
 function showVideo() {
   music.pause();
-
   document.body.innerHTML = `
     <video autoplay controls style="width:100vw;height:100vh;object-fit:cover;">
       <source src="video.mp4" type="video/mp4">
