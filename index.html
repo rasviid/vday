@@ -6,10 +6,6 @@
 <title>Untuk Kamu 💌</title>
 
 <style>
-html, body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: 'Georgia', serif;
@@ -18,7 +14,7 @@ body {
   position: relative;
 }
 
-/* Glow lembut */
+/* Glow */
 body::before {
   content: "";
   position: absolute;
@@ -36,7 +32,7 @@ body::before {
   to { transform: scale(1.3); opacity: 0.2; }
 }
 
-/* Floating love */
+/* Floating hearts */
 .heart {
   position: absolute;
   bottom: -20px;
@@ -51,25 +47,20 @@ body::before {
   100% { transform: translateY(-110vh); opacity: 0; }
 }
 
-/* WRAPPER FIX */
+/* SCROLL SNAP BOOK */
 .book-wrapper {
-  width: 100%;
   height: 100vh;
-  overflow: hidden;
-  position: relative;
-}
-
-/* BOOK */
-.book {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
   display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s ease;
+  scroll-behavior: smooth;
 }
 
 .page {
   flex: 0 0 100%;
-  height: 100%;
+  height: 100vh;
+  scroll-snap-align: start;
   padding: 40px 25px;
   box-sizing: border-box;
   display: flex;
@@ -79,17 +70,8 @@ body::before {
   text-align: center;
 }
 
-h1 {
-  color: #b85c6a;
-  font-size: 24px;
-}
-
-p {
-  max-width: 520px;
-  line-height: 1.7;
-  font-size: 16px;
-  color: #5e3c44;
-}
+h1 { color: #b85c6a; font-size: 24px; }
+p { max-width: 520px; line-height: 1.7; font-size: 16px; color: #5e3c44; }
 
 .choice-buttons button {
   margin: 8px;
@@ -146,42 +128,40 @@ p {
 
 <button id="musicToggle">🔊</button>
 
-<div class="book-wrapper">
-  <div class="book" id="book">
+<div class="book-wrapper" id="book">
 
-    <div class="page">
-      <h1>Untuk Kamu 💌</h1>
-      <p>Aku nggak pernah nyangka perasaan ini bisa tumbuh pelan-pelan kayak gini. Rasanya sederhana, tapi berarti banget.</p>
-    </div>
-
-    <div class="page">
-      <h1>Ada Yang Berbeda</h1>
-      <p>Sejak kenal kamu, hari-hari terasa lebih hangat. Hal kecil jadi spesial, dan senyum jadi lebih sering muncul.</p>
-    </div>
-
-    <div class="page">
-      <h1>Aku Suka Cara Kamu</h1>
-      <p>Caramu ketawa, caramu cerita, caramu jadi diri sendiri — semuanya bikin aku nyaman tanpa dibuat-buat.</p>
-    </div>
-
-    <div class="page">
-      <h1>Bukan Cuma Hari Ini</h1>
-      <p>Aku nggak cuma pengen hari ini terasa manis. Aku pengen banyak hari setelah ini juga tetap ada kamu.</p>
-    </div>
-
-    <div class="page">
-      <h1>Jadi...</h1>
-      <p>Kamu mau nggak jadi bagian dari cerita ini?</p>
-
-      <div class="choice-buttons" id="buttons">
-        <button id="mauBtn" onclick="handleClick(this)">Mau 💕</button>
-        <button id="nggakBtn" onclick="handleClick(this)">Nggak 😅</button>
-      </div>
-
-      <div id="finalArea"></div>
-    </div>
-
+  <div class="page">
+    <h1>Untuk Kamu 💌</h1>
+    <p>Aku nggak pernah nyangka perasaan ini bisa tumbuh pelan-pelan kayak gini. Rasanya sederhana, tapi berarti banget.</p>
   </div>
+
+  <div class="page">
+    <h1>Ada Yang Berbeda</h1>
+    <p>Sejak kenal kamu, hari-hari terasa lebih hangat. Hal kecil jadi spesial, dan senyum jadi lebih sering muncul.</p>
+  </div>
+
+  <div class="page">
+    <h1>Aku Suka Cara Kamu</h1>
+    <p>Caramu ketawa, caramu cerita, caramu jadi diri sendiri — semuanya bikin aku nyaman tanpa dibuat-buat.</p>
+  </div>
+
+  <div class="page">
+    <h1>Bukan Cuma Hari Ini</h1>
+    <p>Aku nggak cuma pengen hari ini terasa manis. Aku pengen banyak hari setelah ini juga tetap ada kamu.</p>
+  </div>
+
+  <div class="page">
+    <h1>Jadi...</h1>
+    <p>Kamu mau nggak jadi bagian dari cerita ini?</p>
+
+    <div class="choice-buttons" id="buttons">
+      <button id="mauBtn" onclick="handleClick(this)">Mau 💕</button>
+      <button id="nggakBtn" onclick="handleClick(this)">Nggak 😅</button>
+    </div>
+
+    <div id="finalArea"></div>
+  </div>
+
 </div>
 
 <button class="nav prev" onclick="prevPage()">‹</button>
@@ -190,8 +170,9 @@ p {
 <script>
 const music = document.getElementById("bgMusic");
 const toggleBtn = document.getElementById("musicToggle");
+const book = document.getElementById("book");
 
-/* START MUSIC DARI DETIK 3 */
+/* START MUSIC FROM 3s */
 music.addEventListener("loadedmetadata", () => {
   music.currentTime = 3;
   music.play();
@@ -217,39 +198,14 @@ setInterval(() => {
   setTimeout(() => heart.remove(), 6000);
 }, 1000);
 
-/* Page navigation */
-let current = 0;
-const book = document.getElementById("book");
-const totalPages = document.querySelectorAll(".page").length;
-
-function update() {
-  book.style.transform = `translateX(-${current * 100}%)`;
-}
-
+/* NAVIGATION */
 function nextPage() {
-  if (current < totalPages - 1) {
-    current++;
-    update();
-  }
+  book.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
 }
 
 function prevPage() {
-  if (current > 0) {
-    current--;
-    update();
-  }
+  book.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
 }
-
-/* Swipe */
-let startX = 0;
-document.addEventListener("touchstart", e => {
-  startX = e.touches[0].clientX;
-});
-document.addEventListener("touchend", e => {
-  let endX = e.changedTouches[0].clientX;
-  if (startX - endX > 50) nextPage();
-  if (endX - startX > 50) prevPage();
-});
 
 /* Tuker tanpa bug */
 function handleClick(button) {
